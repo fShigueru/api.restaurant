@@ -1,0 +1,10 @@
+.env
+.data
+src/.env.local
+src/.env.local.php
+src/.env.*.local
+src/public/bundles/
+src/var/
+src/vendor/
+.idea
+.log

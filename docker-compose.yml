@@ -1,0 +1,79 @@
+version: '3.5'
+
+volumes:
+    db-data:
+
+networks:
+    hackathon:
+        external: true
+        name: hackathon
+        driver: hackathon
+
+services:
+    mysql:
+        image: mysql:5.7
+        volumes:
+            - "./.data/db:/var/lib/mysql"
+        restart: always
+        container_name: ${PROJECT_NAME}.mysql
+        env_file: .env
+        tty: true
+        networks:
+            - hackathon
+        ports:
+            - "3309:3306"
+        expose:
+            - "3306"
+
+    redis:
+        image: fshigueru/redis
+        container_name: ${PROJECT_NAME}.redis
+        ports:
+            - "6379"
+        restart: always
+        env_file: .env
+        tty: true
+        networks:
+            - hackathon
+        volumes:
+            - "./redis/conf/redis.conf:/etc/redis/redis.conf"
+            - "./.data/redis:/data"
+
+    php:
+        image: fshigueru/php7.1
+        container_name: ${PROJECT_NAME}.php
+        expose:
+            - "9000"
+        restart: always
+        env_file: .env
+        tty: true
+        networks:
+            - hackathon
+        volumes:
+            - "./php/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini"
+            - "./src:/src"
+            - "./.log/php/cache:/var/www/html/var/cache"
+            - "./.log/php/log:/var/www/html/var/log"
+            - "~/.ssh:/root/.ssh:ro"
+        links:
+            - mysql
+            - redis
+
+    nginx:
+        image: fshigueru/nginx
+        container_name: ${PROJECT_NAME}.nginx
+        ports:
+            - "8080:80"
+        restart: always
+        env_file: .env
+        tty: true
+        networks:
+            - hackathon
+        volumes:
+            - "./nginx/conf/api:/etc/nginx/conf.d"
+            - "./src:/src"
+        links:
+            - php
+            - redis
+        depends_on:
+            - php

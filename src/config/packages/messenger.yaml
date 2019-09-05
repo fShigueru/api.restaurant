@@ -1,0 +1,27 @@
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        # failure_transport: failed
+
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            #async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            #failed: 'doctrine://default?queue_name=failed'
+            # sync: 'sync://'
+            async_restaurant:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: restaurant
+            async_meal:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: meal
+            async_variation:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: variation
+        routing:
+            # Route your messages to the transports
+            'App\Message\RestaurantQueue': async_restaurant
+            'App\Message\MealQueue': async_meal
+            'App\Message\VariationMealQueue': async_variation
