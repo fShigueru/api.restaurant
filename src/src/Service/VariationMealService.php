@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Entity\DiscountVariationMeal;
 use App\Entity\Meal;
 use App\Entity\VariationMeal;
 use App\Repository\CategoryRepository;
@@ -82,6 +83,23 @@ class VariationMealService
         $this->mealVariationRepository->create($variation);
 
         return $variation;
+    }
+
+    /**
+     * @param VariationMeal $variationMeal
+     * @param DiscountVariationMeal $discount
+     * @throws \Exception
+     */
+    public function discountMeal(VariationMeal $variationMeal, DiscountVariationMeal $discount) : void
+    {
+        $now = new \DateTime('now');
+        if (
+            ($now >= $discount->getRuleInitDate() && $now <= $discount->getRuleFinalDate()) &&
+            ($variationMeal->getPrice() <= $discount->getRuleValue())
+        ){
+            $discountValue = ($variationMeal->getPrice() - $discount->getValue());
+            $variationMeal->setPrice($discountValue);
+        }
     }
 
 }

@@ -2,7 +2,7 @@
 include .env
 export $(shell sed 's/=.*//' .env)
 SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
-PHP_SERVICE := docker-compose exec $$PROJECT_NAME.php sh -c
+PHP_SERVICE := docker exec $$PROJECT_NAME.php sh -c
 PHP_BASH := docker exec -i -t $$PROJECT_NAME.php bash
 PROJECT_PATH := /src
 ##
@@ -34,6 +34,12 @@ docker-image: ## ls
 
 restart: ## ls
 	docker-compose restart
+
+phpunit:
+	$(PHP_SERVICE) "cd /src/ && php bin/phpunit"
+
+behat:
+	$(PHP_SERVICE) "cd /src/ && vendor/bin/behat"
 
 console: ## install symfony
 	$(PHP_SERVICE) "cd /src/ && ${cm}"
