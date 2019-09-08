@@ -86,6 +86,48 @@ class VariationMealService
     }
 
     /**
+     * @param Request $request
+     * @return VariationMeal
+     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function update(Request $request) : VariationMeal
+    {
+        $variation = $this->mealVariationRepository->find($request->get('id'));
+        if (!empty($request->get('price'))) {
+            $variation->setPrice($request->get('price'));
+        }
+
+        if (!empty($request->get('name'))) {
+            $variation->setName($request->get('name'));
+        }
+
+        if (!empty($request->get('description'))) {
+            $variation->setDescription($request->get('description'));
+        }
+
+        $this->mealVariationRepository->update();
+
+        return $variation;
+    }
+
+
+    /**
+     * @param Request $request
+     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Request $request)
+    {
+        $variation = $this->mealVariationRepository->find($request->get('id'));
+        $this->mealVariationRepository->delete($variation);
+    }
+
+    /**
      * @param VariationMeal $variationMeal
      * @param DiscountVariationMeal $discount
      * @throws \Exception

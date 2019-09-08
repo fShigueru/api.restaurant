@@ -88,4 +88,23 @@ class VariationMealRepository extends ServiceEntityRepository
         $this->_em->persist($variationMeal);
         $this->_em->flush();
     }
+
+    /**
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function update() : void
+    {
+        $this->_em->flush();
+    }
+
+    /**
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(VariationMeal $variationMeal) : void
+    {
+        $this->_em->remove($variationMeal);
+        $this->_em->flush();
+    }
 }
