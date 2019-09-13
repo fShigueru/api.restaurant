@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\State\ClosedRestaurantState;
+use App\State\OpenRestaurantState;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,6 +47,11 @@ class Restaurant
      * @ORM\OneToMany(targetEntity="App\Entity\Meal", mappedBy="restaurant")
      */
     private $meal;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $state;
 
     public function __construct()
     {
@@ -134,4 +141,27 @@ class Restaurant
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        if ($this->state) {
+            return new OpenRestaurantState();
+        } else {
+            return new ClosedRestaurantState();
+        }
+    }
+
+    /**
+     * @param mixed $state
+     * @return Restaurant
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
 }

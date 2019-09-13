@@ -1,0 +1,6 @@
+# SlackBot Configuration
+# Documentation https://github.com/wow-apps/symfony-slack-bot/wiki
+wow_apps_slack:
+    api_url: '%env(WOW_APPS_SLACK_BOT_API_URL)%'
+    default_channel: "fiap"
+    default_username: "Filipe"

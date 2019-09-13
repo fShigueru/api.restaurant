@@ -41,6 +41,9 @@ phpunit:
 behat:
 	$(PHP_SERVICE) "cd /src/ && vendor/bin/behat"
 
+async_variation:
+	$(PHP_SERVICE) "cd /src/ && bin/console messenger:consume async_variation"
+
 console: ## install symfony
 	$(PHP_SERVICE) "cd /src/ && ${cm}"
 

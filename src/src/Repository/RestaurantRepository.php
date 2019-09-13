@@ -43,6 +43,14 @@ class RestaurantRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function update() : void
+    {
+        $this->_em->flush();
+    }
 
     // /**
     //  * @return Restaurant[] Returns an array of Restaurant objects

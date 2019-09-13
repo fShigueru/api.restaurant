@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Swagger\Annotations as SWG;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\Messenger\MessageBusInterface;
+use WowApps\SlackBundle\DTO\SlackMessage;
+use WowApps\SlackBundle\Service\SlackBot;
 
 class RestaurantResource extends FOSRestBundle
 {
@@ -128,5 +130,49 @@ class RestaurantResource extends FOSRestBundle
         return View::create(['message' => 'restaurant does not exist'], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * document search
+     * @Rest\Get("/restaurant/state/{id}")
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns state restaurant",
+     * )
+     * @SWG\Tag(name="Restaurant")
+     * @param Request $request
+     * @param RestaurantService $restaurantService
+     * @return View
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function state(Request $request, RestaurantService $restaurantService) : View
+    {
+        $state = $restaurantService->state($request->get('id'));
+        return View::create(['Restaurant open: ' => $state->isOpen()], Response::HTTP_OK);
+    }
+
+    /**
+     * Message slack
+     * @Rest\Post("/slack")
+     * @param Request $request
+     * @return View
+     * @SWG\Parameter(
+     *     name="message",
+     *     in="query",
+     *     type="string",
+     *     description="Message"
+     * )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the rewards of an user"
+     * )
+     * @SWG\Tag(name="Slack")
+     */
+    public function slack(Request $request, SlackBot $slackBot): View
+    {
+        $slackMessage = new SlackMessage($request->get('message'));
+        $slackBot->send($slackMessage);
+
+        return View::create(['Message: ' => 'Mensagem enviada'], Response::HTTP_OK);
+    }
 
 }

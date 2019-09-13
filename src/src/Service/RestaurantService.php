@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Repository\MealRepository;
 use App\Repository\RestaurantRepository;
 use App\Repository\VariationMealRepository;
+use App\State\RestaurantState;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class RestaurantService
@@ -70,5 +71,27 @@ class RestaurantService
             $restaurant['meal'][$key] = $meal;
         }
         return $restaurant;
+    }
+
+    /**
+     * @param int $id
+     * @return RestaurantState
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function state(int $id) : RestaurantState
+    {
+        $restaurant = $this->restaurantRepository->find($id);
+        $state = new RestaurantState($restaurant->getState());
+        if ($state->isOpen()) {
+            $state->close();
+            $restaurant->setState($state->isOpen());
+        } else {
+            $state->open();
+            $restaurant->setState($state->isOpen());
+        }
+
+        $this->restaurantRepository->update($restaurant);
+        return $state;
     }
 }
