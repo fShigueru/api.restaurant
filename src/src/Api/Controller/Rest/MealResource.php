@@ -112,5 +112,23 @@ class MealResource extends FOSRestBundle
         return View::create(['message' => 'Meal does not exist'], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * put restaurant in line
+     * @Rest\Get("/meal/factory/{type}")
+     * @param Request $request
+     * @return View
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns meal factory"
+     * )
+     * @SWG\Tag(name="Meal")
+     */
+    public function factory(Request $request, MealService $mealService) : View
+    {
+        $mealFactory = $mealService->factory($request->get('type'));
+
+        return View::create(['message' => $mealFactory->message(), 'class' => get_class($mealFactory)], Response::HTTP_OK);
+    }
+
 
 }

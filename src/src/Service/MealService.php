@@ -4,7 +4,9 @@
 namespace App\Service;
 
 
+use App\Dto\MealInterface;
 use App\Entity\Meal;
+use App\Factory\MealFactory;
 use App\Repository\CategoryRepository;
 use App\Repository\MealRepository;
 use App\Repository\RestaurantRepository;
@@ -83,6 +85,18 @@ class MealService
         $this->mealRespository->create($meal);
 
         return $meal;
+    }
+
+    /**
+     * @param $type
+     * @return MealInterface
+     */
+    public function factory($type) : MealInterface
+    {
+        $mealFactory = MealFactory::build($type);
+        $mealFactory->meal(new Meal());
+
+        return $mealFactory;
     }
 
 }

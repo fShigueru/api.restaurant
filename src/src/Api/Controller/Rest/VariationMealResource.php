@@ -24,29 +24,19 @@ class VariationMealResource extends FOSRestBundle
      * @param Request $request
      * @return View
      * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Name of meal variation"
-     * )
-     * @SWG\Parameter(
-     *     name="description",
-     *     in="query",
-     *     type="string",
-     *     description="Description of meal variation"
-     * )
-     * @SWG\Parameter(
-     *     name="price",
-     *     in="query",
-     *     type="string",
-     *     description="price"
-     * )
-     * @SWG\Parameter(
-     *     name="meal",
-     *     in="query",
-     *     type="integer",
-     *     description="ID meal"
-     * )
+     *      name="body",
+     *      in="body",
+     *      description="JSON Payload",
+     *      required=true,
+     *      format="application/json",
+     *      @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="name", type="string", example="Serve 3 pessoas"),
+     *          @SWG\Property(property="description", type="string", example="Com farofa e sobremesa"),
+     *          @SWG\Property(property="price", type="string", example="10"),
+     *          @SWG\Property(property="meal", type="string", example="id da refeição")
+     *      )
+     * ),
      * @SWG\Response(
      *     response=200,
      *     description="Returns message confirmation",
@@ -69,23 +59,18 @@ class VariationMealResource extends FOSRestBundle
      * @param Request $request
      * @return View
      * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Name of meal variation"
-     * )
-     * @SWG\Parameter(
-     *     name="description",
-     *     in="query",
-     *     type="string",
-     *     description="Description of meal variation"
-     * )
-     * @SWG\Parameter(
-     *     name="price",
-     *     in="query",
-     *     type="string",
-     *     description="price"
-     * )
+     *      name="body",
+     *      in="body",
+     *      description="JSON Payload",
+     *      required=true,
+     *      format="application/json",
+     *      @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="name", type="string", example="Serve 3 pessoas"),
+     *          @SWG\Property(property="description", type="string", example="Com farofa e sobremesa"),
+     *          @SWG\Property(property="price", type="string", example="10")
+     *      )
+     * ),
      * @SWG\Response(
      *     response=200,
      *     description="Returns message confirmation",

@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Decorator\VariationMealDecorator;
 use App\Entity\DiscountVariationMeal;
 use App\Entity\Meal;
 use App\Entity\VariationMeal;
@@ -37,5 +38,20 @@ class VariationMealTest extends WebTestCase
 
         $service->discountMeal($variationMeal, $discount);
         $this->assertEquals(20, $variationMeal->getPrice(), 'Discount of 5 reais was not applied.');
+    }
+
+
+    /**
+     *
+     */
+    public function testDecorator()
+    {
+        $variationMeal = new VariationMeal();
+        $variationMeal->setName('Macarronada');
+        $variationMeal->setDescription('Macarronada com iscas de frango');
+
+        new VariationMealDecorator($variationMeal, 'Suco de laranja');
+
+        $this->assertEquals('Macarronada com iscas de frango, adicional: Suco de laranja', $variationMeal->getDescription(), 'not applied the additional correctly');
     }
 }
