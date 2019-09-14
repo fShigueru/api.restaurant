@@ -43,7 +43,6 @@ services:
             - "~/.ssh:/root/.ssh:ro"
         links:
             - mysql
-            - redis
 
     nginx:
         image: fshigueru/nginx
@@ -60,6 +59,5 @@ services:
             - "./src:/src"
         links:
             - php
-            - redis
         depends_on:
             - php
