@@ -33,6 +33,7 @@ class VariationMealQueueHandler implements MessageHandlerInterface
     public function __invoke(VariationMealQueue $message)
     {
         $variation = $this->variationMealService->findByIdModelSearch($message->getContent());
+        dump($variation);
         if (empty($variation)) {
             echo 'Variação não existe';
         } else {
