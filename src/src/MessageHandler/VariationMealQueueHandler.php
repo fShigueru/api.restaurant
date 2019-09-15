@@ -30,29 +30,49 @@ class VariationMealQueueHandler implements MessageHandlerInterface
         $this->slackBot = $slackBot;
     }
 
+    /**
+     * @param VariationMealQueue $message
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function __invoke(VariationMealQueue $message)
-    {
-        $variation = $this->variationMealService->findByIdModelSearch($message->getContent());
-        if (empty($variation)) {
-            echo 'Variação não existe';
-        } else {
-            try{
-                $httpClient = HttpClient::create();
-                $response = $httpClient->request('POST', sprintf('http://%s/meal', $_ENV['API_SEARCH']), [
-                    'json' => $variation
-                ]);
-            }catch (\Exception $e) {
-                print_r($e->getMessage());
-            }
+    {   try{
+            $variation = $this->variationMealService->findByIdModelSearch($message->getContent());
+            if (empty($variation)) {
+                echo 'Variação não existe';
+            } else {
 
-            if ($response->getStatusCode() == 200) {
-                $slackMessage = new SlackMessage($response->getContent());
-                $this->slackBot->send($slackMessage);
-            }
+                    $httpClient = HttpClient::create();
+                    $response = $httpClient->request('POST', sprintf('http://%s/meal', $_ENV['API_SEARCH']), [
+                        'json' => $variation
+                    ]);
 
-            $contents = $response->getContent();
-            dump($contents);
-            dump($response->getStatusCode());
+                    if ($response->getStatusCode() == 200) {
+                        $slackMessage = new SlackMessage($response->getContent());
+                        $this->slackBot->send($slackMessage);
+                    }
+
+                    $contents = $response->getContent();
+                    dump($contents);
+                    dump($response->getStatusCode());
+
+            }
+        }
+        catch (ClientExceptionInterface $e) {
+            print_r($e->getMessage());
+        }
+        catch (RedirectionExceptionInterface $e) {
+            print_r($e->getMessage());
+        }
+        catch (ServerExceptionInterface $e) {
+            print_r($e->getMessage());
+        }catch (TransportExceptionInterface $e) {
+            print_r($e->getMessage());
+        }
+        catch (\Exception $e) {
+            print_r($e->getMessage());
         }
     }
 }
