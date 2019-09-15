@@ -52,6 +52,7 @@ class VariationMealQueueHandler implements MessageHandlerInterface
 
             $contents = $response->getContent();
             dump($contents);
+            dump($response->getStatusCode());
         }
     }
 }
