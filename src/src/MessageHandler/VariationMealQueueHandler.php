@@ -33,14 +33,17 @@ class VariationMealQueueHandler implements MessageHandlerInterface
     public function __invoke(VariationMealQueue $message)
     {
         $variation = $this->variationMealService->findByIdModelSearch($message->getContent());
-        dump($variation);
         if (empty($variation)) {
             echo 'Variação não existe';
         } else {
-            $httpClient = HttpClient::create();
-            $response = $httpClient->request('POST', sprintf('http://%s/meal', $_ENV['API_SEARCH']), [
-                'json' => $variation
-            ]);
+            try{
+                $httpClient = HttpClient::create();
+                $response = $httpClient->request('POST', sprintf('http://%s/meal', $_ENV['API_SEARCH']), [
+                    'json' => $variation
+                ]);
+            }catch (\Exception $e) {
+                print_r($e->getMessage());
+            }
 
             if ($response->getStatusCode() == 200) {
                 $slackMessage = new SlackMessage($response->getContent());
