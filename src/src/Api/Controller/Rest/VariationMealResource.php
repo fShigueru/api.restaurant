@@ -161,7 +161,8 @@ class VariationMealResource extends FOSRestBundle
         if (!empty($variation)) {
             try {
                 $message = $bus->dispatch(new VariationMealQueue($request->get('id')));
-                return View::create(['message' => sprintf('Document Variation Meal queue ok! %s', $message->getMessage())], Response::HTTP_OK);
+                dump($message->getMessage());
+                return View::create(['message' => 'Document Variation Meal queue ok!'], Response::HTTP_OK);
             } catch (\Exception $e) {
                 return View::create(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
             }
