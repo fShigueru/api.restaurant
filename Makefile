@@ -50,6 +50,10 @@ console: ## install symfony
 composer_install: ## install symfony
 	$(PHP_SERVICE) "cd /src/ && composer install"
 
+migrate: ## install symfony
+	$(PHP_SERVICE) "cd /src/ && bin/console doc:mi:mi"
+	$(PHP_SERVICE) "cd /src/ && bin/console doctrine:fixtures:load"
+
 sf-install: ## install symfony
 	$(PHP_SERVICE) "cd /src/ && composer create-project symfony/skeleton api && cp -a api/. . && rm -rf api/"
 	$(PHP_SERVICE) "composer install --optimize-autoloader --prefer-dist --working-dir=$(PROJECT_PATH)"
