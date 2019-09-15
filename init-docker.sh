@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-cd api.restaurant
 touch .env
 echo "PROJECT_NAME=api.restaurant" >> .env
 echo "MYSQL_ROOT_PASSWORD=root" >> .env
@@ -25,3 +24,5 @@ cd ..
 make composer_install
 
 make migrate
+
+chmod 777 -R src/var/.*
