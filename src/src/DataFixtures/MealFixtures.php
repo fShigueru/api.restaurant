@@ -24,6 +24,7 @@ class MealFixtures extends Fixture implements DependentFixtureInterface
         $meal->setName('Filé de frango');
         $meal->setDescription('Filé de frango grelhado com fritas');
         $meal->setPosition(1);
+        $meal->setImage('https://i.pinimg.com/originals/ae/a1/90/aea19010e011789e02ffc37a66b70fa0.jpg');
         $meal->setCategory($this->getReference(CategoryFixtures::CATEGORY));
         $meal->setRestaurant($this->getReference(RestaurantFixtures::RESTAURANT));
 
