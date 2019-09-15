@@ -47,6 +47,9 @@ async_variation:
 console: ## install symfony
 	$(PHP_SERVICE) "cd /src/ && ${cm}"
 
+composer_install: ## install symfony
+	$(PHP_SERVICE) "cd /src/ && composer install"
+
 sf-install: ## install symfony
 	$(PHP_SERVICE) "cd /src/ && composer create-project symfony/skeleton api && cp -a api/. . && rm -rf api/"
 	$(PHP_SERVICE) "composer install --optimize-autoloader --prefer-dist --working-dir=$(PROJECT_PATH)"
